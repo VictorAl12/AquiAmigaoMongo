@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AquiAmigao.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ namespace AquiAmigao.Core
 {
     public interface IUsuarioService
     {
-        List<Usuario> GetUsuarios();
-        Usuario GetUsuario(string id);
-        Usuario AddUsuario(Usuario usuario);
-        void DeleteUsuario(string id);
-        Usuario UpdateUsuario(Usuario usuario);
+        List<UsuarioResponse> GetUsuarios();
+        UsuarioResponse GetUsuario(string id);
+        BaseResponse AddUsuario(UsuarioRequest request);
+        BaseResponse UpdateUsuario(UsuarioRequest request);
+        BaseResponse DeleteUsuario(string id);
     }
 }

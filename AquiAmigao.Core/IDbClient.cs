@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using AquiAmigao.Core.Entity;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace AquiAmigao.Core
     public interface IDbClient
     {
         IMongoCollection<Usuario> GetUsuariosCollection();
+        IMongoCollection<Post> GetPostsCollection();
     }
 }

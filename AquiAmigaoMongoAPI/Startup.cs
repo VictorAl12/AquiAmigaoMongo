@@ -1,4 +1,7 @@
 using AquiAmigao.Core;
+using AquiAmigao.Core.Interface;
+using AquiAmigao.Core.Repository;
+using AquiAmigao.Core.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,8 +34,13 @@ namespace AquiAmigaoMongoAPI
             services.AddSingleton<IDbClient, DbClient>();
             services.Configure<AquiAmigaoDBConfig>(Configuration);
 
-            // Adicao das collections
+            // =============== Adicao das collections ===============
+            // Usuario
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
             services.AddTransient<IUsuarioService, UsuarioService>();
+
+            // Post/Postagem
+            services.AddTransient<IPostService, PostService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

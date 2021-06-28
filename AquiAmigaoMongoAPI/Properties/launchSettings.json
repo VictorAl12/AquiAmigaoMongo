@@ -15,8 +15,10 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        //"CONNECTION_STRING": "mongodb+srv://harry-admin:harrypassword@cluster0.cfuoj.mongodb.net/AquiAmigaoDb?retryWrites=true&w=majority",
         "DATABASE_NAME": "AquiAmigaoDb",
-        "USUARIOS_COLLECTION_NAME": "Usuarios"
+        "USUARIOS_COLLECTION_NAME": "Usuarios",
+        "POSTS_COLLECTION_NAME": "Posts"
       }
     },
     "AquiAmigaoMongoAPI": {
@@ -27,8 +29,10 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        //"CONNECTION_STRING": "mongodb+srv://harry-admin:harrypassword@cluster0.cfuoj.mongodb.net/AquiAmigaoDb?retryWrites=true&w=majority",
         "DATABASE_NAME": "AquiAmigaoDb",
-        "USUARIOS_COLLECTION_NAME": "Usuarios"
+        "USUARIOS_COLLECTION_NAME": "Usuarios",
+        "POSTS_COLLECTION_NAME": "Posts"
       }
     }
   }

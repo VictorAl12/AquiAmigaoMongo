@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using AquiAmigao.Core.Interface;
+using AquiAmigao.Core.Model;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 
@@ -6,37 +8,95 @@ namespace AquiAmigao.Core
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly IMongoCollection<Usuario> _usuarios;
-        public UsuarioService(IDbClient dbClient)
+        private IUsuarioRepository _usuarioRepository;
+        public UsuarioService(IUsuarioRepository usuarioRepository)
         {
-            _usuarios = dbClient.GetUsuariosCollection();
+            _usuarioRepository = usuarioRepository;
         }
 
-
-        public List<Usuario> GetUsuarios() => _usuarios.Find(usuario => true).ToList();
-
-
-        public Usuario GetUsuario(string id) => _usuarios.Find(usuario => usuario.Id == id).First();
-
-
-        public Usuario AddUsuario(Usuario usuario)
+        public List<UsuarioResponse> GetUsuarios()
         {
-            _usuarios.InsertOne(usuario);
-            return usuario;
+            var entity = _usuarioRepository.GetUsuarios();
+
+            List<UsuarioResponse> response = new List<UsuarioResponse>();
+
+            entity.ForEach(u => {
+                response.Add(new UsuarioResponse()
+                {
+                    Id = u.Id,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    Telefone = u.Telefone
+                });
+            });
+
+            return response;
         }
 
-
-        public void DeleteUsuario(string id)
+        public UsuarioResponse GetUsuario(string id)
         {
-            _usuarios.DeleteOne(usuario => usuario.Id == id);
+            var entity = _usuarioRepository.GetUsuario(id);
+
+            return new UsuarioResponse()
+            {
+                Id = entity.Id,
+                Nome = entity.Nome,
+                Email = entity.Email,
+                Telefone = entity.Telefone
+            };
         }
 
-
-        public Usuario UpdateUsuario(Usuario usuario)
+        public BaseResponse AddUsuario(UsuarioRequest request)
         {
-            GetUsuario(usuario.Id);
-            _usuarios.ReplaceOne(u => u.Id == usuario.Id, usuario);
-            return usuario;
+            if (request.Nome == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Nome precisa ser preenchido" };
+            if (request.Email == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Email precisa ser preenchido" };
+
+            var entity = _usuarioRepository.GetByEmail(request.Email);
+            if (entity != null)
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Email ja foi cadastrado" };
+
+            Usuario usuario = new Usuario();
+            usuario.Id = request.Id;
+            usuario.Nome = request.Nome;
+            usuario.Email = request.Email;
+            usuario.Telefone = request.Telefone;
+
+            _usuarioRepository.AddUsuario(usuario);
+
+            return new BaseResponse() { StatusCode = 201 };
+        }
+
+        public BaseResponse UpdateUsuario(UsuarioRequest request)
+        {
+            if (request.Nome == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Nome precisa ser preenchido" };
+            if (request.Email == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Email precisa ser preenchido" };
+
+            var entity = _usuarioRepository.GetByEmail(request.Email);
+            if (entity != null)
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Email ja foi cadastrado" };
+
+            Usuario usuario = new Usuario();
+            usuario.Id = request.Id;
+            usuario.Nome = request.Nome;
+            usuario.Email = request.Email;
+            usuario.Telefone = request.Telefone;
+
+            _usuarioRepository.UpdateUsuario(usuario);
+
+            return new BaseResponse() { StatusCode = 200 };
+        }
+
+        public BaseResponse DeleteUsuario(string id)
+        {
+            if (id == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "ID precisa ser preenchida" };
+
+            _usuarioRepository.DeleteUsuario(id);
+            return new BaseResponse() { StatusCode = 200 };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AquiAmigao.Core;
+using AquiAmigao.Core.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -21,33 +22,36 @@ namespace AquiAmigaoMongoAPI.Controllers
         [HttpGet]
         public IActionResult GetUsuarios()
         {
-            return Ok(_usuarioService.GetUsuarios());
+            var response = _usuarioService.GetUsuarios();
+            return new ObjectResult(response) { StatusCode = 200 };
         }
 
-        [HttpGet("{id}", Name ="GetUsuario")]
+        [HttpGet("{id}", Name = "GetUsuario")]
         public IActionResult GetUsuario(string id)
         {
-            return Ok(_usuarioService.GetUsuario(id));
+            var response = _usuarioService.GetUsuario(id);
+            return new ObjectResult(response) { StatusCode = 200 };
         }
 
         [HttpPost]
-        public IActionResult AddUsuario(Usuario usuario)
+        public IActionResult AddUsuario(UsuarioRequest request)
         {
-            _usuarioService.AddUsuario(usuario);
-            return CreatedAtRoute("GetUsuario", new { id = usuario.Id }, usuario);
+            var response = _usuarioService.AddUsuario(request);
+            return new ObjectResult(response) { StatusCode = response.StatusCode };
+        }
+
+        [HttpPut]
+        public IActionResult UpdateUsuario(UsuarioRequest request)
+        {
+            var response = _usuarioService.UpdateUsuario(request);
+            return new ObjectResult(response) { StatusCode = response.StatusCode };
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteUsuario(string id)
         {
-            _usuarioService.DeleteUsuario(id);
-            return NoContent();
-        }
-
-        [HttpPut]
-        public IActionResult UpdateUsuario(Usuario usuario)
-        {
-            return Ok(_usuarioService.UpdateUsuario(usuario));
+            var response = _usuarioService.DeleteUsuario(id);
+            return new ObjectResult(response) { StatusCode = response.StatusCode };
         }
     }
 }
