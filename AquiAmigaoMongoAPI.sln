@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquiAmigaoMongoAPI", "AquiAmigaoMongoAPI\AquiAmigaoMongoAPI.csproj", "{9D32D16C-E595-4C33-9B21-BD4780CF3A1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquiAmigao.Core", "AquiAmigao.Core\AquiAmigao.Core.csproj", "{E90C5590-BE87-4B91-B613-021F40F06950}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D32D16C-E595-4C33-9B21-BD4780CF3A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D32D16C-E595-4C33-9B21-BD4780CF3A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D32D16C-E595-4C33-9B21-BD4780CF3A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D32D16C-E595-4C33-9B21-BD4780CF3A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E90C5590-BE87-4B91-B613-021F40F06950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E90C5590-BE87-4B91-B613-021F40F06950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E90C5590-BE87-4B91-B613-021F40F06950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E90C5590-BE87-4B91-B613-021F40F06950}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D2E4052-23AC-406B-9AD9-8D30ACABA569}
+	EndGlobalSection
+EndGlobal
