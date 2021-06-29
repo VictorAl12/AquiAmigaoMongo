@@ -1,5 +1,6 @@
 ﻿using AquiAmigao.Core.Entity;
 using AquiAmigao.Core.Interface;
+using AquiAmigao.Core.Model;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -8,25 +9,91 @@ namespace AquiAmigao.Core.Service
 {
     public class PostService : IPostService
     {
-        private readonly IMongoCollection<Post> _posts;
-        //private readonly IMongoCollection<Usuario> _usuarios;
-        public PostService(IDbClient dbClient)
+        private IPostRepository _postRepository;
+        public PostService(IPostRepository postRepository)
         {
-            _posts = dbClient.GetPostsCollection();
-            //_usuarios = dbClient.GetUsuariosCollection();
+            _postRepository = postRepository;
         }
 
-        public List<Post> GetPosts() => _posts.Find(post => true).ToList();
-
-        public Post GetPost(string id) => _posts.Find(post => post.Id == id).First();
-        //public Usuario GetUsuarioId(string id) => _usuarios.Find(usuario => usuario.Id == id).First();
-
-        public Post AddPost(Post post)
+        public List<PostResponse> GetPosts()
         {
-            //if(GetUsuarioId(post.UsuarioId) == null) { }
+            var entity = _postRepository.GetPosts();
 
-            _posts.InsertOne(post);
-            return post;
+            List<PostResponse> response = new List<PostResponse>();
+
+            entity.ForEach(p => {
+                response.Add(new PostResponse()
+                {
+                    Id = p.Id,
+                    Conteudo = p.Conteudo,
+                    UsuarioId = p.UsuarioId
+                });
+            });
+
+            return response;
+        }
+
+        public PostResponse GetPost(string id)
+        {
+            var entity = _postRepository.GetPost(id);
+
+            return new PostResponse()
+            {
+                Id = entity.Id,
+                Conteudo = entity.Conteudo,
+                UsuarioId = entity.UsuarioId
+            };
+        }
+
+        public BaseResponse AddPost(PostRequest request)
+        {
+            if (request.Conteudo == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Post precisa ter conteudo" };
+            if (request.UsuarioId == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Usuario ID precisa ser preenchido" };
+
+            var entity = _postRepository.GetByUsuarioId(request.UsuarioId);
+            if (entity == null)
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Usuario precisa estar cadastrado" };
+
+            Post post = new Post();
+            post.Id = request.Id;
+            post.Conteudo = request.Conteudo;
+            post.UsuarioId = request.UsuarioId;
+
+            _postRepository.AddPost(post);
+
+            return new BaseResponse() { StatusCode = 201 };
+        }
+
+        public BaseResponse UpdatePost(PostRequest request)
+        {
+            if (request.Conteudo == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Post precisa ter conteudo" };
+            if (request.UsuarioId == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Usuario ID precisa ser preenchido" };
+
+            var entity = _postRepository.GetByUsuarioId(request.UsuarioId);
+            if (entity == null)
+                return new BaseResponse() { StatusCode = 400, Mensagem = "Usuario precisa estar cadastrado" };
+
+            Post post = new Post();
+            post.Id = request.Id;
+            post.Conteudo = request.Conteudo;
+            post.UsuarioId = request.UsuarioId;
+
+            _postRepository.AddPost(post);
+
+            return new BaseResponse() { StatusCode = 200 };
+        }
+
+        public BaseResponse DeleteUsuario(string id)
+        {
+            if (id == "")
+                return new BaseResponse() { StatusCode = 400, Mensagem = "ID precisa ser preenchida" };
+
+            _postRepository.DeletePost(id);
+            return new BaseResponse() { StatusCode = 200 };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AquiAmigao.Core.Entity;
+using AquiAmigao.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace AquiAmigao.Core.Interface
 {
     public interface IPostService
     {
-        List<Post> GetPosts();
-        Post GetPost(string id);
-        Post AddPost(Post post);
+        List<PostResponse> GetPosts();
+        PostResponse GetPost(string id);
+        BaseResponse AddPost(PostRequest request);
+        BaseResponse UpdatePost(PostRequest request);
+        BaseResponse DeleteUsuario(string id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AquiAmigao.Core.Entity;
 using AquiAmigao.Core.Interface;
+using AquiAmigao.Core.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,20 +22,36 @@ namespace AquiAmigaoMongoAPI.Controllers
         [HttpGet]
         public IActionResult GetPosts()
         {
-            return Ok(_postService.GetPosts());
+            var response = _postService.GetPosts();
+            return new ObjectResult(response) { StatusCode = 200 };
         }
 
         [HttpGet("{id}", Name = "GetPost")]
         public IActionResult GetPost(string id)
         {
-            return Ok(_postService.GetPost(id));
+            var response = _postService.GetPost(id);
+            return new ObjectResult(response) { StatusCode = 200 };
         }
 
         [HttpPost]
-        public IActionResult AddPost(Post post)
+        public IActionResult AddPost(PostRequest request)
         {
-            _postService.AddPost(post);
-            return CreatedAtRoute("GetPost", new { id = post.Id }, post);
+            var response =_postService.AddPost(request);
+            return new ObjectResult(response) { StatusCode = response.StatusCode };
+        }
+
+        [HttpPut]
+        public IActionResult UpdatePost(PostRequest request)
+        {
+            var response = _postService.UpdatePost(request);
+            return new ObjectResult(response) { StatusCode = response.StatusCode };
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeletePost(string id)
+        {
+            var response = _postService.DeleteUsuario(id);
+            return new ObjectResult(response) { StatusCode = response.StatusCode };
         }
     }
 }

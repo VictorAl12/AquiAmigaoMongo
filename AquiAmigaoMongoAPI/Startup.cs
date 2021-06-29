@@ -40,6 +40,7 @@ namespace AquiAmigaoMongoAPI
             services.AddTransient<IUsuarioService, UsuarioService>();
 
             // Post/Postagem
+            services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IPostService, PostService>();
 
             services.AddControllers();
